@@ -1,10 +1,7 @@
 <template>
 	<view class="home">
 		<!-- 搜索 -->
-		<view class="top">
-			<input class="search" value="" placeholder="搜索" confirm-type="search" />
-			<icon class="icon" type="search" color="#bbb" size="28rpx"></icon>
-		</view>
+		<SearchLink></SearchLink>
 		<!-- 轮播 -->
 		<swiper class="swiper" :indicator-dots="true" indicator-color="rgba(255, 255, 255, 0.4)" indicator-active-color="#fff"
 		 :autoplay="true" :interval="3000" :duration="1000" circular>
@@ -42,7 +39,12 @@
 </template>
 
 <script>
+	import request from '../../utils/request.js'
+	import SearchLink from '@/components/SearchLink.vue'
 	export default {
+		components:{
+			SearchLink
+		},
 		data() {
 			return {
 				swiperList: [],
@@ -51,62 +53,38 @@
 			}
 		},
 		methods: {
-
+			async getSwiperList() {
+				const res = await request({
+					url: '/home/swiperdata'
+				})
+				this.swiperList = res.message
+			},
+			async getCatitems() {
+				const res = await request({
+					url: '/home/catitems'
+				})
+				this.catitems = res.message
+			},
+			async getFloordata() {
+				const res = await request({
+					url: '/home/floordata'
+				})
+				this.floordata = res.message
+			}
 		},
 		created() {
-			uni.request({
-				url: 'https://www.uinav.com/api/public/v1/home/swiperdata',
-				success: res => {
-					if (res.statusCode === 200) {
-						this.swiperList = res.data.message
-					}
-				}
-			})
-
-			uni.request({
-				url: 'https://www.uinav.com/api/public/v1/home/catitems',
-				success: res => {
-					this.catitems = res.data.message
-				}
-			})
-
-			uni.request({
-				url: 'https://www.uinav.com/api/public/v1/home/floordata',
-				success: res => {
-					this.floordata = res.data.message
-					console.log(this.floordata)
-				}
-			})
+			// 获取轮播图
+			this.getSwiperList()
+			// 获取分类
+			this.getCatitems()
+			// 获取楼层
+			this.getFloordata()
 		}
 	}
 </script>
 
 <style lang="less" scoped>
 	.home {
-		.top {
-			position: relative;
-			height: 60rpx;
-			padding: 20rpx 16rpx;
-			background: #eb4450;
-
-			.search {
-				height: 60rpx;
-				background: #fff;
-				text-align: center;
-				font-size: 30rpx;
-				line-height: 60rpx;
-				padding-left: 50rpx;
-				border-radius: 6rpx;
-			}
-
-			.icon {
-				position: absolute;
-				left: 50%;
-				top: 50%;
-				transform: translate(-150%, -50%);
-			}
-		}
-
 		.swiper {
 			height: 340rpx;
 
