@@ -23,6 +23,12 @@
 			"style": {
 				"navigationBarTitleText": "我的"
 			}
+		},
+		{
+			"path": "components/SearchPage",
+			"style": {
+				"navigationBarTitleText": "搜索"
+			}
 		}
 	],
 	"globalStyle": {

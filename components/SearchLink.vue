@@ -16,7 +16,9 @@
 		},
 		methods: {
 			searchEvent() {
-				console.log('搜索')
+				uni.navigateTo({
+					url:'/components/SearchPage'
+				})
 			}
 		}
 	}
