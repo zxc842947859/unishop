@@ -2,15 +2,18 @@
 	<view class="category" v-if="categoryList.length">
 		<!-- 搜索 -->
 		<SearchLink></SearchLink>
+		<!-- 主体 -->
 		<view class="content">
+			<!-- 左侧分类 -->
 			<view class="left">
 				<view class="item" v-for="(cate, index) in categoryList" :key="index" @click="switchCat(index)" :class="{activeBg: cateId === index}">
-					<view :class="{activeTitle: cateId === index}">
+					<view class="activeTitle">
 						{{ cate.cat_name }}
 					</view>
 				</view>
 
 			</view>
+			<!-- 右侧 -->
 			<view class="right" v-if="toggle">
 				<image id="top" ref='top' class="top-img" src="../../static/images/titleImage.png" mode=""></image>
 				<view class="cate-item" v-for="(cateItem, catIndex) in categoryList[cateId].children" :key="catIndex">
@@ -49,7 +52,6 @@
 					url: '/categories'
 				})
 				this.categoryList = res.message
-				console.log(this.categoryList)
 			},
 			switchCat(index) {
 				this.cateId = index
@@ -61,11 +63,6 @@
 		},
 		created() {
 			this.getCategories()
-		},
-		mounted() {
-			let query = uni.createSelectorQuery();
-			const dom = query.select('#top')
-			console.log(dom)
 		}
 	}
 </script>
