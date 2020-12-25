@@ -21,7 +21,7 @@
 		<view class="floor-box">
 			<view class="floor-item" v-for="(item, index) in floordata" :key="index">
 				<view class="floor-top">
-					<image :src="item.floor_title.image_src" mode=""></image>
+					<image :src="item.floor_title.image_src" mode="aspectFit"></image>
 				</view>
 				<view class="floor-info">
 					<view class="left">
@@ -39,34 +39,38 @@
 </template>
 
 <script>
-	import request from '../../utils/request.js'
 	import SearchLink from '@/components/SearchLink.vue'
 	export default {
-		components:{
+		components: {
 			SearchLink
 		},
 		data() {
 			return {
-				swiperList: [],
-				catitems: [],
-				floordata: []
+				swiperList: [], // 轮播
+				catitems: [], // 类别
+				floordata: [] // 楼层
 			}
 		},
 		methods: {
+			// 获取轮播数据
 			async getSwiperList() {
-				const res = await request({
+				const res = await this.$request({
 					url: '/home/swiperdata'
 				})
 				this.swiperList = res.message
 			},
+
+			// 获取类别
 			async getCatitems() {
-				const res = await request({
+				const res = await this.$request({
 					url: '/home/catitems'
 				})
 				this.catitems = res.message
 			},
+
+			// 获取楼层
 			async getFloordata() {
-				const res = await request({
+				const res = await this.$request({
 					url: '/home/floordata'
 				})
 				this.floordata = res.message
@@ -148,7 +152,24 @@
 							width: 232rpx;
 						}
 					}
+				}
+			}
 
+			// 偶数楼层大图在右边
+			.floor-item:nth-child(2n) {
+				.floor-info {
+					.left {
+						order: 1;
+
+						image {
+							margin-right: 0;
+							margin-left: 10rpx;
+						}
+					}
+
+					.right {
+						flex-direction: row-reverse;
+					}
 				}
 			}
 		}

@@ -1,6 +1,9 @@
 import Vue from 'vue'
 import App from './App'
-import base from './static/css/base.css'
+import Request from './utils/request.js'
+
+// 将封装好的请求函数函数挂载到Vue上
+Vue.prototype.$request = Request
 
 Vue.config.productionTip = false
 

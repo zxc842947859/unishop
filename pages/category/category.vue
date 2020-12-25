@@ -34,7 +34,6 @@
 
 <script>
 	import SearchLink from '@/components/SearchLink.vue'
-	import request from '../../utils/request.js'
 	export default {
 		components: {
 			SearchLink
@@ -48,7 +47,7 @@
 		},
 		methods: {
 			async getCategories() {
-				const res = await request({
+				const res = await this.$request({
 					url: '/categories'
 				})
 				this.categoryList = res.message
@@ -69,17 +68,19 @@
 
 <style lang="less" scoped>
 	.category {
-		width: 100%;
-		height: 100%;
-		position: relative;
 
 		.content {
+			position: fixed;
+			top: 100rpx;
+			left: 0;
+			bottom: 0;
+			right: 0;
 			display: flex;
 			justify-content: space-between;
 
 			.left {
 				position: absolute;
-				top: 100rpx;
+				top: 0;
 				left: 0;
 				bottom: 0;
 				width: 198rpx;
@@ -123,7 +124,7 @@
 
 			.right {
 				position: absolute;
-				top: 100rpx;
+				top: 0;
 				right: 0;
 				bottom: 0;
 				overflow: auto;
