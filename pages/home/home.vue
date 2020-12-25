@@ -13,7 +13,7 @@
 		</swiper>
 		<!-- 分类 -->
 		<view class="type">
-			<view class="item" v-for="(item, index) in catitems" :key="index">
+			<view class="item" v-for="(item, index) in catitems" :key="index" @click="go2cat(index)">
 				<image :src="item.image_src" mode=""></image>
 			</view>
 		</view>
@@ -74,6 +74,12 @@
 					url: '/home/floordata'
 				})
 				this.floordata = res.message
+			},
+			// 跳转至分类界面
+			go2cat(index) {
+				!index && uni.switchTab({
+					url: '/pages/category/category'
+				})
 			}
 		},
 		created() {
