@@ -30,7 +30,16 @@
 				"navigationBarTitleText": "搜索"
 			}
 		}
-	],
+	    ,{
+            "path" : "components/SearchList/SearchList",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+    ],
 	"globalStyle": {
 		"navigationBarTextStyle": "white",
 		"navigationBarBackgroundColor": "#eb4450",
