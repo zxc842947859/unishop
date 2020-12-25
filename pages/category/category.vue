@@ -6,10 +6,8 @@
 		<view class="content">
 			<!-- 左侧分类 -->
 			<view class="left">
-				<view class="item" v-for="(cate, index) in categoryList" :key="index" @click="switchCat(index)" :class="{activeBg: cateId === index}">
-					<view class="activeTitle">
-						{{ cate.cat_name }}
-					</view>
+				<view class="item" v-for="(cate, index) in categoryList" :key="index" @click="switchCat(index)" :class="{active: cateId === index}">
+					{{ cate.cat_name }}
 				</view>
 
 			</view>
@@ -40,9 +38,9 @@
 		},
 		data() {
 			return {
-				categoryList: [],
-				cateId: 0,
-				toggle: true
+				categoryList: [], // 类别所有数据
+				cateId: 0, // 当前选择的类别
+				toggle: true // 用来控制右侧的静默刷新
 			}
 		},
 		methods: {
@@ -52,6 +50,7 @@
 				})
 				this.categoryList = res.message
 			},
+			// 切换类别
 			switchCat(index) {
 				this.cateId = index
 				this.toggle = false
@@ -107,17 +106,22 @@
 					font-size: 28rpx;
 				}
 
-				.activeBg {
+				.active {
 					background: #fff;
+					font-weight: bold;
+					color: #eb4450;
+					position: relative;
 
-					.activeTitle {
-						box-sizing: border-box;
-						margin: 20rpx 0;
-						text-indent: -8rpx;
-						line-height: 60rpx;
-						font-weight: bold;
-						color: #eb4450;
-						border-left: 8rpx solid #eb4450;
+					&::before {
+						content: '';
+						position: absolute;
+						left: 0;
+						top: 50%;
+						width: 8rpx;
+						height: 60rpx;
+						transform: translateY(-50%);
+						background: #eb4450;
+						
 					}
 				}
 			}
