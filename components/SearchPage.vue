@@ -1,7 +1,7 @@
 <template>
 	<view class="search-page">
 		<view class="search-bar">
-			<input type="text" v-model="searchKeyWord" placeholder="请输入您想要的商品" @confirm="searchEvent" />
+			<input type="text" v-model.trim="searchKeyWord" placeholder="请输入您想要的商品" @confirm="searchEvent" />
 			<icon type="search" size="36rpx"></icon>
 			<button type="default" size="mini">取消</button>
 		</view>
@@ -11,7 +11,7 @@
 				<icon type="clear" size="30rpx" color="#cccccc" @click="clearHistory"></icon>
 			</view>
 			<view class="search-list">
-				<text class="search-record" v-for="(item, index) in searchHistoryList" :key="index">{{ item }}</text>
+				<text class="search-record" @click="historySearch(item)" v-for="(item, index) in searchHistoryList" :key="index">{{ item }}</text>
 			</view>
 
 		</view>
@@ -23,7 +23,7 @@
 		data() {
 			return {
 				searchKeyWord: '', // 搜索关键字
-				searchHistoryList: []
+				searchHistoryList: [] // 搜索记录
 			}
 		},
 		onShow() {
@@ -46,8 +46,14 @@
 					success: () => {}
 				})
 			},
+			// 点击历史搜索进行搜索
+			historySearch(kw) {
+				this.searchKeyWord = kw
+				this.searchEvent()
+			},
 			// 搜索Í
 			searchEvent() {
+				if (this.searchKeyWord.length <= 0) return
 				// 添加搜索记录到列表开头
 				this.searchHistoryList.unshift(this.searchKeyWord)
 				this.searchHistoryList.length > 10 && (this.searchHistoryList = this.searchHistoryList.slice((0, 10)))
@@ -64,7 +70,6 @@
 			},
 			// 清除历史搜索记录
 			clearHistory() {
-
 				this.searchHistoryList.length && uni.showModal({
 					title: '提示',
 					content: '您确定要删除历史搜索记录嘛?',
