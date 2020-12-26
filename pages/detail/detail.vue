@@ -87,7 +87,7 @@
 	export default {
 		data() {
 			return {
-				detailData: null, // 商品详情数据
+				detailData: null,  // 商品详情数据
 				showIntroduce: true // 显示图文介绍
 			}
 		},
@@ -246,7 +246,7 @@
 
 			.guige {
 				background: #fff;
-				padding: 1rpx 15rpx 0 17rpx;
+				padding: 0rpx 15rpx 1rpx 17rpx;
 
 				.guige-info {
 					display: flex;

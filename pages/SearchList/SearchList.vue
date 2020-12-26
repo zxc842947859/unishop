@@ -120,7 +120,6 @@
 			this.loadMore()
 		},
 		onPageScroll(e) {
-			console.log(e, 'xxxx')
 			this.xd = e.scrollTop > 0 
 		}
 	}
