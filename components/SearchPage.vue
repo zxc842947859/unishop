@@ -1,7 +1,7 @@
 <template>
 	<view class="search-page">
 		<view class="search-bar">
-			<input type="text" v-model.trim="searchKeyWord" placeholder="请输入您想要的商品" @confirm="searchEvent" />
+			<input type="text" v-model.trim="searchKeyWord" placeholder="请输入您想要的商品" @confirm="searchEvent" confirm-type="search"/>
 			<icon type="search" size="36rpx"></icon>
 			<button type="default" size="mini">取消</button>
 		</view>
@@ -37,7 +37,6 @@
 		},
 		created() {
 			this.$bus.$on('saveHistory', (kw) => {
-				console.log(kw)
 				this.go2List = false
 				this.historySearch(kw)
 			})
@@ -73,7 +72,7 @@
 				})
 				// 跳转到搜索列表界面
 				this.go2List && uni.navigateTo({
-					url: '/components/SearchList/SearchList?kw=' + this.searchKeyWord
+					url: '/pages/SearchList/SearchList?kw=' + this.searchKeyWord
 				})
 			},
 			// 清除历史搜索记录

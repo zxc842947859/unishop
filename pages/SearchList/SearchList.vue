@@ -61,25 +61,30 @@
 			this.status !== 'noMore' && this.loadMore()
 		},
 		methods: {
+			// 切换排序规则
 			switchSort(sort) {
 				this.down = this.up = false
 				this.sortStr = sort
 				this.searchGoods()
 			},
+			// 以价格进行排序
 			switchPrice() {
 				this.sortStr = '价格'
-				this.down = !this.down
-				this.up = !this.down
+				this.down = !(this.up = this.down)
 				this.searchGoods()
 			},
+			// 搜索商品
 			searchGoods() {
+				// 利用eventbus通知 searchPage保存搜索记录
 				this.$bus.$emit('saveHistory', this.searchKW)
+				// 恢复初始状态
 				this.pagenum = 1
 				this.page = 0
 				this.status = 'more'
 				this.goodsList = []
 				this.loadMore()
 			},
+			// 加载商品数据
 			async loadMore() {
 				// 加载中
 				this.status = 'loading'
@@ -92,20 +97,19 @@
 						pagesize: this.pagesize
 					},
 					isShowLoading: false,
-
 				})
+				// 累加页数
 				this.page++
 				this.pagenum = (this.page * this.pagesize) + 1
 				this.goodsList.push(...res.message.goods)
-				console.log(res)
+				// 排序
 				this.sortStr === '价格' && this.goodsList.sort((item1, item2) =>
 					this.down ? item2.goods_price - item1.goods_price : item1.goods_price - item2.goods_price
 				)
-				console.log(this.goodsList)
+				// 数据是否已全部加载完
 				this.status = this.goodsList.length >= res.message.total || !res.message.goods.length ? 'noMore' : 'more'
 			}
 		},
-
 		onLoad(option) {
 			this.searchKW = option.kw
 			this.loadMore()

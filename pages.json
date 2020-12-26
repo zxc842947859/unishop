@@ -30,7 +30,7 @@
 				"navigationBarTitleText": "搜索"
 			}
 		}, {
-			"path": "components/SearchList/SearchList",
+			"path": "pages/SearchList/SearchList",
 			"style": {
 				"navigationBarTitleText": "搜索",
 				"enablePullDownRefresh": false,
