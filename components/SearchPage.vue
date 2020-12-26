@@ -23,7 +23,8 @@
 		data() {
 			return {
 				searchKeyWord: '', // 搜索关键字
-				searchHistoryList: [] // 搜索记录
+				searchHistoryList: [], // 搜索记录
+				go2List: true
 			}
 		},
 		onShow() {
@@ -32,6 +33,13 @@
 				success: (res) => {
 					this.searchHistoryList = res.data
 				}
+			})
+		},
+		created() {
+			this.$bus.$on('saveHistory', (kw) => {
+				console.log(kw)
+				this.go2List = false
+				this.historySearch(kw)
 			})
 		},
 		methods: {
@@ -64,7 +72,7 @@
 					data: this.searchHistoryList
 				})
 				// 跳转到搜索列表界面
-				uni.navigateTo({
+				this.go2List && uni.navigateTo({
 					url: '/components/SearchList/SearchList?kw=' + this.searchKeyWord
 				})
 			},

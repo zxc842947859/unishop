@@ -7,7 +7,7 @@
 			<view class="search-bar">
 				<view class="search-box">
 					<icon class="se-icon" type="search" size="36rpx"></icon>
-					<input refs='search' type="text" v-model="searchKW" confirm-type="search" :focus="searchKW.length || !searchKW.length"
+					<input refs='search' type="text" v-model="searchKW" confirm-type="search" :focus="!searchKW.length"
 					 @confirm="searchGoods" />
 					<icon class="clear-icon" type="clear" size="30rpx" v-show="searchKW.length" @click="searchKW = ''"></icon>
 				</view>
@@ -73,6 +73,7 @@
 				this.searchGoods()
 			},
 			searchGoods() {
+				this.$bus.$emit('saveHistory', this.searchKW)
 				this.pagenum = 1
 				this.page = 0
 				this.status = 'more'
