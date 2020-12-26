@@ -7,7 +7,8 @@
 			<view class="search-bar">
 				<view class="search-box">
 					<icon class="se-icon" type="search" size="36rpx"></icon>
-					<input refs='search' type="text" v-model="searchKW" confirm-type="search" :focus="searchKW.length || !searchKW.length" @confirm="searchGoods" />
+					<input refs='search' type="text" v-model="searchKW" confirm-type="search" :focus="searchKW.length || !searchKW.length"
+					 @confirm="searchGoods" />
 					<icon class="clear-icon" type="clear" size="30rpx" v-show="searchKW.length" @click="searchKW = ''"></icon>
 				</view>
 			</view>
@@ -15,7 +16,7 @@
 			<view class="sort-box">
 				<view class="sort-item" :class="{active: sortStr === '综合'}" @click="switchSort('综合')">综合</view>
 				<view class="sort-item" :class="{active: sortStr === '销量'}" @click="switchSort('销量')">销量</view>
-				<view class="sort-item" :class="{active: sortStr === '价格'}" @click="switchSort('价格')">价格</view>
+				<view class="sort-item pricesort" :class="{active: sortStr === '价格', pricedown: down, priceup: up}" @click="switchPrice('价格')">价格</view>
 			</view>
 		</view>
 		<!-- 商品列表 -->
@@ -48,9 +49,11 @@
 				inFouchs: false,
 				sortStr: '综合',
 				pagenum: 1,
-				pagesize: 10,
+				pagesize: 5,
 				page: 0,
-				status: 'more'
+				status: 'more',
+				down: false,
+				up: false
 			}
 		},
 		// 上拉加载更多
@@ -59,7 +62,15 @@
 		},
 		methods: {
 			switchSort(sort) {
+				this.down = this.up = false
 				this.sortStr = sort
+				this.searchGoods()
+			},
+			switchPrice() {
+				this.sortStr = '价格'
+				this.down = !this.down
+				this.up = !this.down
+				this.searchGoods()
 			},
 			searchGoods() {
 				this.pagenum = 1
@@ -85,6 +96,11 @@
 				this.page++
 				this.pagenum = (this.page * this.pagesize) + 1
 				this.goodsList.push(...res.message.goods)
+				console.log(res)
+				this.sortStr === '价格' && this.goodsList.sort((item1, item2) =>
+					this.down ? item2.goods_price - item1.goods_price : item1.goods_price - item2.goods_price
+				)
+				console.log(this.goodsList)
 				this.status = this.goodsList.length >= res.message.total || !res.message.goods.length ? 'noMore' : 'more'
 			}
 		},
@@ -151,6 +167,55 @@
 
 				.active {
 					color: #ea4451;
+				}
+
+				.pricesort {
+					position: relative;
+
+					&::after {
+						content: '';
+						position: absolute;
+						top: 50%;
+						left: 66%;
+						transform: translateY(-100%);
+						border-color: transparent transparent #ccc transparent;
+						/*1、下边框有颜色 对应着上边框没有宽度,是正三角形；2、上边框有颜色 对应着下边框没宽度，是倒三角形*/
+						border-style: solid;
+						border-width: 0 8rpx 8rpx 8rpx;
+					}
+
+					&::before {
+						content: '';
+						position: absolute;
+						top: 50%;
+						left: 66%;
+						transform: translateY(100%);
+						border-color: #ccc transparent transparent transparent;
+						/*1、下边框有颜色 对应着上边框没有宽度,是正三角形；2、上边框有颜色 对应着下边框没宽度，是倒三角形*/
+						border-style: solid;
+						border-width: 8rpx 8rpx 0 8rpx;
+
+					}
+				}
+
+				.pricedown {
+					&::after {
+						border-color: transparent transparent #cccccc transparent;
+					}
+
+					&::before {
+						border-color: #666666 transparent transparent transparent;
+					}
+				}
+
+				.priceup {
+					&::after {
+						border-color: transparent transparent #666 transparent;
+					}
+
+					&::before {
+						border-color: #ccc transparent transparent transparent;
+					}
 				}
 			}
 		}
