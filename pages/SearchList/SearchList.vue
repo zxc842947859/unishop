@@ -19,7 +19,7 @@
 		</view>
 		<!-- 商品列表 -->
 		<list class="goods-list">
-			<cell class="goods-item" v-for="(goodsItem, goodsIndex) in goodsList" :key="goodsItem.goods_id">
+			<cell class="goods-item" v-for="(goodsItem, goodsIndex) in goodsList" :key="goodsItem.goods_id" @click.native="go2detail(goodsItem.goods_id)">
 				<image class="cell-left" :src="goodsItem.goods_small_logo" mode="aspectFit"></image>
 				<view class="cell-right">
 					<text class="goods-title">{{ goodsItem.goods_name }}</text>
@@ -107,6 +107,12 @@
 				this.goodsList.push(...res.message.goods)
 				// 数据是否已全部加载完
 				this.status = this.goodsList.length >= res.message.total ? 'noMore' : 'more'
+			},
+			// 跳转商品详情
+			go2detail(goodId) {
+				uni.navigateTo({
+					url: '/pages/detail/detail?goods_id=' + goodId
+				})
 			}
 		},
 		onLoad(option) {
