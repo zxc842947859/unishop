@@ -19,7 +19,7 @@
 						{{ cateItem.cat_name }}
 					</view>
 					<view class="cate-item-box">
-						<view class="item-box-info" v-for="(infoItem, infoIndex) in cateItem.children" :key="infoIndex">
+						<view class="item-box-info" v-for="(infoItem, infoIndex) in cateItem.children" :key="infoIndex" @click="go2search(infoItem.cat_name)">
 							<image class="info-img" :src="infoItem.cat_icon" mode=""></image>
 							<view class="cat-info-name">{{infoItem.cat_name }}</view>
 						</view>
@@ -56,6 +56,11 @@
 				this.toggle = false
 				this.$nextTick(() => {
 					this.toggle = true
+				})
+			},
+			go2search(name) {
+				uni.navigateTo({
+					url: '../SearchList/SearchList?kw=' + name
 				})
 			}
 		},

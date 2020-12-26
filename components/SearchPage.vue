@@ -1,9 +1,10 @@
 <template>
 	<view class="search-page">
 		<view class="search-bar">
-			<input type="text" v-model.trim="searchKeyWord" placeholder="请输入您想要的商品" @confirm="searchEvent" confirm-type="search"/>
-			<icon type="search" size="36rpx"></icon>
-			<button type="default" size="mini">取消</button>
+			<input type="text" v-model.trim="searchKeyWord" placeholder="请输入您想要的商品" @confirm="searchEvent" confirm-type="search" @blur="clearShow=false" @focus="clearShow=true"/>
+			<icon type="search" class="search-icon" size="36rpx"></icon>
+			<icon class="clear-icon" type="clear" size="26rpx" v-show="searchKeyWord.length && clearShow" @click="searchKeyWord = ''"></icon>
+			<button type="default" size="mini" @click="back">取消</button>
 		</view>
 		<view class="search-box">
 			<view class="top">
@@ -13,7 +14,6 @@
 			<view class="search-list">
 				<text class="search-record" @click="historySearch(item)" v-for="(item, index) in searchHistoryList" :key="index">{{ item }}</text>
 			</view>
-
 		</view>
 	</view>
 </template>
@@ -23,6 +23,7 @@
 		data() {
 			return {
 				searchKeyWord: '', // 搜索关键字
+				clearShow: false,
 				searchHistoryList: [], // 搜索记录
 				go2List: true
 			}
@@ -42,6 +43,9 @@
 			})
 		},
 		methods: {
+			back() {
+				uni.navigateBack()
+			},
 			saveHistory({
 				key = 'historyList',
 				data
@@ -66,7 +70,6 @@
 				this.searchHistoryList.length > 10 && (this.searchHistoryList = this.searchHistoryList.slice((0, 10)))
 				// 去重
 				this.searchHistoryList = [...new Set(this.searchHistoryList)]
-				console.log(this.searchHistoryList)
 				this.saveHistory({
 					data: this.searchHistoryList
 				})
@@ -111,6 +114,7 @@
 				font-size: 24rpx;
 				padding-left: 68rpx;
 				color: #333;
+				// padding-right: 70rpx;
 			}
 
 			button {
@@ -121,7 +125,7 @@
 				width: 160rpx;
 			}
 
-			icon {
+			.search-icon {
 				position: absolute;
 				left: 38rpx;
 				top: 50%;
@@ -130,6 +134,12 @@
 				height: 30rpx;
 				overflow: hidden;
 			}
+			.clear-icon {
+				position: absolute;
+				right: 220rpx;
+				z-index: 99;
+			}
+			
 		}
 
 		.search-box {

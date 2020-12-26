@@ -1,15 +1,13 @@
 <template>
 	<view class="search-list">
-		<view class="top">
-
-
+		<view class="top" :class="{xd: xd}">
 			<!-- 搜索栏 -->
 			<view class="search-bar">
 				<view class="search-box">
 					<icon class="se-icon" type="search" size="36rpx"></icon>
-					<input refs='search' type="text" v-model="searchKW" confirm-type="search" :focus="!searchKW.length"
-					 @confirm="searchGoods" />
-					<icon class="clear-icon" type="clear" size="30rpx" v-show="searchKW.length" @click="searchKW = ''"></icon>
+					<input refs='search' type="text" v-model="searchKW" confirm-type="search"
+					 @confirm="searchGoods" @blur="clearShow=false" @focus="clearShow=true"/>
+					<icon class="clear-icon" type="clear" size="30rpx" v-show="searchKW.length && clearShow" @click="searchKW = ''"></icon>
 				</view>
 			</view>
 			<!-- 排序 -->
@@ -46,19 +44,23 @@
 			return {
 				goodsList: [], // 商品列表
 				searchKW: '',
-				inFouchs: false,
+				clearShow: false,
 				sortStr: '综合',
-				pagenum: 1,
+				page: 1,
 				pagesize: 5,
-				page: 0,
 				status: 'more',
 				down: false,
-				up: false
+				up: false,
+				xd: false
 			}
 		},
 		// 上拉加载更多
 		onReachBottom() {
 			this.status !== 'noMore' && this.loadMore()
+		},
+		// 下拉刷新
+		onPullDownRefresh() {
+			this.searchGoods()
 		},
 		methods: {
 			// 切换排序规则
@@ -71,15 +73,17 @@
 			switchPrice() {
 				this.sortStr = '价格'
 				this.down = !(this.up = this.down)
-				this.searchGoods()
+				// 排序
+				this.goodsList.sort((item1, item2) =>
+					this.down ? item2.goods_price - item1.goods_price : item1.goods_price - item2.goods_price
+				)
 			},
 			// 搜索商品
 			searchGoods() {
 				// 利用eventbus通知 searchPage保存搜索记录
 				this.$bus.$emit('saveHistory', this.searchKW)
 				// 恢复初始状态
-				this.pagenum = 1
-				this.page = 0
+				this.page = 1
 				this.status = 'more'
 				this.goodsList = []
 				this.loadMore()
@@ -93,44 +97,46 @@
 					url: '/goods/search',
 					data: {
 						query: this.searchKW,
-						pagenum: this.pagenum,
+						pagenum: this.page,
 						pagesize: this.pagesize
 					},
 					isShowLoading: false,
 				})
 				// 累加页数
 				this.page++
-				this.pagenum = (this.page * this.pagesize) + 1
 				this.goodsList.push(...res.message.goods)
-				// 排序
-				this.sortStr === '价格' && this.goodsList.sort((item1, item2) =>
-					this.down ? item2.goods_price - item1.goods_price : item1.goods_price - item2.goods_price
-				)
 				// 数据是否已全部加载完
-				this.status = this.goodsList.length >= res.message.total || !res.message.goods.length ? 'noMore' : 'more'
+				this.status = this.goodsList.length >= res.message.total ? 'noMore' : 'more'
 			}
 		},
 		onLoad(option) {
 			this.searchKW = option.kw
 			this.loadMore()
+		},
+		onPageScroll(e) {
+			console.log(e, 'xxxx')
+			this.xd = e.scrollTop > 0 
 		}
 	}
 </script>
 
 <style lang="less" scoped>
 	.search-list {
+		position: relative;
+		
 		.top {
-			position: fixed;
+			position: absolute;
 			top: 0;
 			left: 0;
 			right: 0;
-			z-index: 2;
+			z-index: 22;
 
 			.search-bar {
 				padding: 30rpx 16rpx;
 				background: #eeeeee;
 
 				.search-box {
+					position: relative;
 					height: 60rpx;
 					background: #fff;
 					display: flex;
@@ -150,8 +156,10 @@
 					}
 
 					.clear-icon {
+						position: absolute;
 						right: 16rpx;
 						margin: 0 16rpx;
+						z-index: 99;
 					}
 				}
 			}
@@ -224,7 +232,9 @@
 				}
 			}
 		}
-
+		.xd {
+			position: fixed;
+		}
 		.goods-list {
 			position: relative;
 			top: 220rpx;

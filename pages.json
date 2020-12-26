@@ -33,8 +33,10 @@
 			"path": "pages/SearchList/SearchList",
 			"style": {
 				"navigationBarTitleText": "搜索",
-				"enablePullDownRefresh": false,
-				"onReachBottomDistance":50
+				"enablePullDownRefresh": true,
+				"backgroundColor": "#ccc",
+				"backgroundTextStyle": "light",
+				"onReachBottomDistance": 50
 			}
 
 		}
