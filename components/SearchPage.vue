@@ -1,7 +1,7 @@
 <template>
 	<view class="search-page">
 		<view class="search-bar">
-			<input type="text" v-model.trim="searchKeyWord" placeholder="请输入您想要的商品" @confirm="searchEvent" confirm-type="search" @blur="clearShow=false" @focus="clearShow=true"/>
+			<input type="text" v-model.trim="searchKeyWord" placeholder="请输入您想要的商品" @confirm="searchEvent" confirm-type="search" @blur="clearShow=false" @focus="clearShow=true" focus />
 			<icon type="search" class="search-icon" size="36rpx"></icon>
 			<icon class="clear-icon" type="clear" size="26rpx" v-show="searchKeyWord.length && clearShow" @click="searchKeyWord = ''"></icon>
 			<button type="default" size="mini" @click="back">取消</button>
@@ -9,7 +9,7 @@
 		<view class="search-box">
 			<view class="top">
 				<text>历史搜索</text>
-				<icon type="clear" size="30rpx" color="#cccccc" @click="clearHistory"></icon>
+				<icon type="clear" size="30rpx" color="#cccccc" @click="clearHistory" v-if="searchHistoryList.length"></icon>
 			</view>
 			<view class="search-list">
 				<text class="search-record" @click="historySearch(item)" v-for="(item, index) in searchHistoryList" :key="index">{{ item }}</text>
