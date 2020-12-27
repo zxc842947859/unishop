@@ -59,29 +59,31 @@
 			<view v-if="showIntroduce" class="twjs" v-html="detailData.goods_introduce"></view>
 			<!-- 规格参数 -->
 			<view class="guige" v-else>
-				<view class="guige-box">
+				<view class="guige-box" v-if="detailData.attrs.length">
 					<view class="guige-info" v-for="(specItem, speIndex) in detailData.attrs" :key="speIndex">
 						<view class="spec-title"><text>{{ specItem.attr_name }}</text></view>
 						<view class="spec-val"><text>{{ specItem.attr_value }}</text></view>
 					</view>
 				</view>
+				<view v-else style="text-align: center; color: #999;">没有数据了
 			</view>
 		</view>
-		<!-- 底部工具栏 -->
-		<view class="bottom-flex">
-			<view class="kefu">
-				<icon class="iconfont icon-lianxikefu"></icon>
-				联系客服
-			</view>
-			<view class="gwc">
-				<icon class="icon-gwc iconfont"></icon>
-				购物车
-			</view>
-			<view class="buy">
-				<button class="addgwc" type="warn" size="mini">加入购物车</button>
-				<button class="by" type="warn" size="mini">立即购买</button>
-			</view>
+	</view>
+	<!-- 底部工具栏 -->
+	<view class="bottom-flex">
+		<view class="kefu">
+			<icon class="iconfont icon-lianxikefu"></icon>
+			联系客服
 		</view>
+		<view class="gwc">
+			<icon class="icon-gwc iconfont"></icon>
+			购物车
+		</view>
+		<view class="buy">
+			<button class="addgwc" type="warn" size="mini">加入购物车</button>
+			<button class="by" type="warn" size="mini">立即购买</button>
+		</view>
+	</view>
 	</view>
 </template>
 

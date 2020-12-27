@@ -1,12 +1,12 @@
 <template>
 	<view class="search-list">
-		<view class="top" :class="{xd: xd}">
+		<view class="top">
 			<!-- 搜索栏 -->
 			<view class="search-bar">
 				<view class="search-box">
 					<icon class="se-icon" type="search" size="36rpx"></icon>
-					<input refs='search' type="text" v-model="searchKW" confirm-type="search"
-					 @confirm="searchGoods" @blur="clearShow=false" @focus="clearShow=true"/>
+					<input refs='search' type="text" v-model="searchKW" confirm-type="search" @confirm="searchGoods" @blur="clearShow=false"
+					 @focus="clearShow=true" />
 					<icon class="clear-icon" type="clear" size="30rpx" v-show="searchKW.length && clearShow" @click="searchKW = ''"></icon>
 				</view>
 			</view>
@@ -43,27 +43,28 @@
 		data() {
 			return {
 				goodsList: [], // 商品列表
-				searchKW: '',  // 搜索关键字
-				clearShow: false,  // 是否显示输入框清除图标
-				sortStr: '综合',  // 排序字段
-				page: 1,  // 第几页数据
-				pagesize: 5,  // 每页显示几条
-				status: 'more',  // 上拉加载更多状态
-				down: false,  // 价格排序 高到低 向下
-				up: false,  // 价格排序 低到高 向上
-				xd: false,   // 头部是否固定定位
-				xlz: false  // 下拉加载中
+				searchKW: '', // 搜索关键字
+				clearShow: false, // 是否显示输入框清除图标
+				sortStr: '综合', // 排序字段
+				page: 1, // 第几页数据
+				pagesize: 5, // 每页显示几条
+				status: 'more', // 上拉加载更多状态
+				down: false, // 价格排序 高到低 向下
+				up: false, // 价格排序 低到高 向上
+				// xd: false, // 头部是否固定定位
+				isRequesting: false // 下拉加载中
 			}
 		},
 		// 上拉加载更多
 		onReachBottom() {
+			if (this.isRequesting) return
 			this.status !== 'noMore' && this.loadMore()
 		},
 		// 下拉刷新
 		onPullDownRefresh() {
-			if (this.xlz) return
+			if (this.isRequesting) return
 			this.searchGoods()
-			
+
 		},
 		methods: {
 			// 切换排序规则
@@ -83,7 +84,7 @@
 			},
 			// 搜索商品
 			searchGoods() {
-				this.xlz = true
+				this.isRequesting = true
 				// 利用eventbus通知 searchPage保存搜索记录
 				this.$bus.$emit('saveHistory', this.searchKW)
 				// 恢复初始状态
@@ -91,7 +92,7 @@
 				this.status = 'more'
 				this.goodsList = []
 				this.loadMore()
-				
+
 			},
 			// 加载商品数据
 			async loadMore() {
@@ -112,8 +113,10 @@
 				this.goodsList.push(...res.message.goods)
 				// 数据是否已全部加载完
 				this.status = this.goodsList.length >= res.message.total ? 'noMore' : 'more'
-				this.xlz = false
-				
+				// 下拉加载完后 关闭动画
+				this.isRequesting && uni.stopPullDownRefresh() && (this.isRequesting = false)
+
+
 			},
 			// 跳转商品详情
 			go2detail(goodId) {
@@ -125,23 +128,29 @@
 		onLoad(option) {
 			this.searchKW = option.kw
 			this.loadMore()
-		},
-		onPageScroll(e) {
-			this.xd = e.scrollTop > 0 
 		}
+		// onPageScroll(e) {
+		// 	this.xd = e.scrollTop > 0
+		// }
 	}
 </script>
 
 <style lang="less" scoped>
 	.search-list {
 		position: relative;
-		
+
 		.top {
-			position: absolute;
+			// position: absolute;
+			// top: 0;
+			// left: 0;
+			// right: 0;
+			z-index: 2;
+			// 粘性布局
+			position: sticky;
 			top: 0;
 			left: 0;
 			right: 0;
-			z-index: 22;
+			background-color: #fff;
 
 			.search-bar {
 				padding: 30rpx 16rpx;
@@ -245,12 +254,14 @@
 				}
 			}
 		}
+
 		.xd {
 			position: fixed;
 		}
+
 		.goods-list {
 			position: relative;
-			top: 220rpx;
+			// top: 220rpx;
 
 			// position: fixed;
 			// left: 0;

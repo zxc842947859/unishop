@@ -1,4 +1,4 @@
-const BASE_URL = 'https://www.uinav.com/api/public/v1'
+const BASE_URL = 'https://api-ugo-dev.itheima.net/api/public/v1'
 
 export default function request({
 	url,
