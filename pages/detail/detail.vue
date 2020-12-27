@@ -6,7 +6,7 @@
 			 indicator-active-color="#fff" indicator-color="rgba(255, 255, 255, 0.4)">
 				<block v-for="(pic, pic_index) in detailData.pics" :key="pic_index">
 					<swiper-item>
-						<image :src="pic.pics_big_url" mode=""></image>
+						<image :src="pic.pics_big_url" @click="prevImg(pic_index)" mode=""></image>
 					</swiper-item>
 				</block>
 			</swiper>
@@ -92,7 +92,14 @@
 			}
 		},
 		methods: {
-
+			prevImg(current) {
+				const urls = this.detailData.pics.map(item => item.pics_big_url)
+				uni.previewImage({
+					urls,
+					current
+				})
+				
+			}
 		},
 		async onLoad(option) {
 			const res = await this.$request({
@@ -263,15 +270,15 @@
 						margin: -1rpx 0 0 -1rpx;
 						display: flex;
 						align-items: center;
-						text {
-							
-						}
+
+						text {}
 					}
 
 					.spec-title {
 						display: flex;
 						align-items: center;
 						justify-content: center;
+
 						text {
 							text-align: center;
 						}
