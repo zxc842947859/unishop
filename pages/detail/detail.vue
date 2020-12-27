@@ -60,8 +60,8 @@
 			<!-- 规格参数 -->
 			<view class="guige" v-else>
 				<view class="guige-info" v-for="(specItem, speIndex) in detailData.attrs" :key="speIndex">
-					<text class="spec-title">{{ specItem.attr_name }}</text>
-					<text class="spec-val">{{ specItem.attr_value }}</text>
+					<view class="spec-title"><text>{{ specItem.attr_name }}</text></view>
+					<view class="spec-val"><text>{{ specItem.attr_value }}</text></view>
 				</view>
 			</view>
 		</view>
@@ -87,7 +87,7 @@
 	export default {
 		data() {
 			return {
-				detailData: null,  // 商品详情数据
+				detailData: null, // 商品详情数据
 				showIntroduce: true // 显示图文介绍
 			}
 		},
@@ -159,10 +159,10 @@
 						margin-left: 30rpx;
 						width: 130rpx;
 						border-left: 1px solid #dddddd;
-						font-size: 14px;
+						font-size: 12px;
 
 						.icon-shoucang {
-							font-size: 18px;
+							font-size: 16px;
 							color: #999;
 						}
 
@@ -249,20 +249,32 @@
 				padding: 0rpx 15rpx 1rpx 17rpx;
 
 				.guige-info {
+					margin-bottom: -1rpx;
 					display: flex;
 					justify-content: space-between;
 
-					text {
+
+					view {
 						flex: 1;
-						border: 1rpx solid #999;
+						border: 1rpx solid #ccc;
 						font-size: 10px;
 						padding: 20rpx;
 						color: #333;
 						margin: -1rpx 0 0 -1rpx;
+						display: flex;
+						align-items: center;
+						text {
+							
+						}
 					}
 
 					.spec-title {
-						text-align: center;
+						display: flex;
+						align-items: center;
+						justify-content: center;
+						text {
+							text-align: center;
+						}
 					}
 				}
 			}
