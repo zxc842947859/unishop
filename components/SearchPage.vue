@@ -111,7 +111,7 @@
 				flex: 1;
 				height: 60rpx;
 				background: #fff;
-				font-size: 24rpx;
+				font-size: 13px;
 				padding-left: 68rpx;
 				color: #333;
 				// padding-right: 70rpx;
@@ -166,7 +166,7 @@
 				flex-wrap: wrap;
 
 				.search-record {
-					font-size: 24rpx;
+					font-size: 13px;
 					background: #dddddd;
 					padding: 10rpx 20rpx;
 					color: #333;

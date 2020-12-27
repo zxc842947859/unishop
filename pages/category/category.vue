@@ -120,7 +120,7 @@
 					border-bottom: 1px solid #eee;
 					text-align: center;
 					color: #333;
-					font-size: 28rpx;
+					font-size: 14px;
 				}
 
 				.active {
@@ -172,20 +172,20 @@
 						height: 110rpx;
 						text-align: center;
 						color: #333;
-						font-size: 28rpx;
+						font-size: 14px;
 
 						&::before {
 							content: '/';
 							margin-right: 30rpx;
 							color: #e0e0e0;
-							font-size: 24rpx;
+							font-size: 12px;
 						}
 
 						&::after {
 							content: '/';
 							margin-left: 30rpx;
 							color: #e0e0e0;
-							font-size: 24rpx;
+							font-size: 12px;
 						}
 					}
 
@@ -206,7 +206,7 @@
 
 							.cat-info-name {
 								color: #333;
-								font-size: 24rpx;
+								font-size: 12px;
 								line-height: 24rpx;
 							}
 						}

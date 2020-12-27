@@ -34,7 +34,7 @@
 			"style": {
 				"navigationBarTitleText": "搜索",
 				"enablePullDownRefresh": true,
-				// "backgroundColor": "#ccc",
+				// "backgroundColor": "#090",
 				// "backgroundTextStyle": "light",
 				"onReachBottomDistance": 50
 			}

@@ -36,7 +36,7 @@
 				height: 60rpx;
 				background: #fff;
 				text-align: center;
-				font-size: 26rpx;
+				font-size: 13px;
 				line-height: 60rpx;
 				padding-left: 50rpx;
 				border-radius: 6rpx;

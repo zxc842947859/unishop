@@ -154,7 +154,7 @@
 					display: flex;
 					align-items: center;
 					color: #333;
-					font-size: 28rpx;
+					font-size: 14px;
 
 					.se-icon {
 						width: 30rpx;
@@ -185,6 +185,7 @@
 				justify-content: space-between;
 				align-items: center;
 				text-align: center;
+				font-size: 14px;
 
 				.sort-item {
 					flex: 1;
@@ -279,7 +280,7 @@
 					flex-direction: column;
 
 					.goods-title {
-						font-size: 28rpx;
+						font-size: 14px;
 						color: #333;
 						overflow: hidden;
 						text-overflow: ellipsis;
@@ -290,11 +291,11 @@
 
 					.price {
 						color: #ea4451;
-						font-size: 36rpx;
+						font-size: 18px;
 						font-weight: 500;
 
 						text {
-							font-size: 24rpx;
+							font-size: 12px;
 							margin-right: 4rpx;
 						}
 					}
