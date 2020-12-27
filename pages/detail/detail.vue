@@ -59,9 +59,11 @@
 			<view v-if="showIntroduce" class="twjs" v-html="detailData.goods_introduce"></view>
 			<!-- 规格参数 -->
 			<view class="guige" v-else>
-				<view class="guige-info" v-for="(specItem, speIndex) in detailData.attrs" :key="speIndex">
-					<view class="spec-title"><text>{{ specItem.attr_name }}</text></view>
-					<view class="spec-val"><text>{{ specItem.attr_value }}</text></view>
+				<view class="guige-box">
+					<view class="guige-info" v-for="(specItem, speIndex) in detailData.attrs" :key="speIndex">
+						<view class="spec-title"><text>{{ specItem.attr_name }}</text></view>
+						<view class="spec-val"><text>{{ specItem.attr_value }}</text></view>
+					</view>
 				</view>
 			</view>
 		</view>
@@ -98,10 +100,11 @@
 					urls,
 					current
 				})
-				
+
 			}
 		},
 		async onLoad(option) {
+			console.log(option)
 			const res = await this.$request({
 				url: '/goods/detail?goods_id=' + option.goods_id
 			})
@@ -253,34 +256,42 @@
 
 			.guige {
 				background: #fff;
-				padding: 0rpx 15rpx 1rpx 17rpx;
+				padding: 0 16rpx 0rpx 16rpx;
 
-				.guige-info {
-					margin-bottom: -1rpx;
-					display: flex;
-					justify-content: space-between;
+				.guige-box {
+					border-bottom: 1rpx solid #ccc;
 
-
-					view {
-						flex: 1;
+					.guige-info {
 						border: 1rpx solid #ccc;
-						font-size: 10px;
-						padding: 20rpx;
-						color: #333;
-						margin: -1rpx 0 0 -1rpx;
+						border-bottom: 0;
+						// border-bottom: 0;
 						display: flex;
-						align-items: center;
+						justify-content: space-between;
 
-						text {}
-					}
 
-					.spec-title {
-						display: flex;
-						align-items: center;
-						justify-content: center;
+						view {
+							flex: 1;
+							font-size: 10px;
+							padding: 20rpx;
+							color: #333;
+							display: flex;
+							align-items: center;
+						}
 
-						text {
-							text-align: center;
+						.spec-title {
+							border-right: 1rpx solid #ccc;
+							display: flex;
+							align-items: center;
+							justify-content: center;
+
+							text {
+								text-align: center;
+							}
+						}
+
+						.spec-val {
+							word-break: break-all;
+							word-wrap: break-word;
 						}
 					}
 				}
