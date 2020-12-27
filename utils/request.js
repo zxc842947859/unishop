@@ -1,6 +1,5 @@
 const BASE_URL = 'https://www.uinav.com/api/public/v1'
 
-
 export default function request({
 	url,
 	data,
@@ -13,7 +12,7 @@ export default function request({
 		if (isShowLoading) {
 			uni.showLoading({
 				title: '加载中...',
-				mask: true  // 开启透明遮罩,防止点击穿透
+				mask: true // 开启透明遮罩,防止点击穿透
 			})
 		}
 		uni.request({
@@ -34,7 +33,7 @@ export default function request({
 			// 请求完成回调
 			complete: () => {
 				// 关闭加载动画
-				uni.hideLoading()
+				isShowLoading && uni.hideLoading()
 			}
 		})
 	})

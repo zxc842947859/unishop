@@ -12,7 +12,7 @@
 
 			</view>
 			<!-- 右侧 -->
-			<view class="right" v-if="toggle">
+			<scroll-view class="right" scroll-y :scroll-top="scrollTop" @scroll="scroll" scroll-with-animation>
 				<image id="top" ref='top' class="top-img" src="../../static/images/titleImage.png" mode=""></image>
 				<view class="cate-item" v-for="(cateItem, catIndex) in categoryList[cateId].children" :key="catIndex">
 					<view class="cat-top">
@@ -25,7 +25,7 @@
 						</view>
 					</view>
 				</view>
-			</view>
+			</scroll-view>
 		</view>
 	</view>
 </template>
@@ -40,7 +40,11 @@
 			return {
 				categoryList: [], // 类别所有数据
 				cateId: 0, // 当前选择的类别
-				toggle: true // 用来控制右侧的静默刷新
+				toggle: true, // 用来控制右侧的静默刷新
+				scrollTop: 0,  // 当前二级类别滚动位置
+				old: {  // 原二级类别滚动位置
+					scrollTop: 0
+				}
 			}
 		},
 		methods: {
@@ -50,20 +54,28 @@
 				})
 				this.categoryList = res.message
 			},
+			// 记录原分类位置
+			scroll: function(e) {
+				this.old.scrollTop = e.detail.scrollTop
+			},
 			// 切换类别
 			switchCat(index) {
 				this.cateId = index
-				this.toggle = false
-				this.$nextTick(() => {
-					this.toggle = true
-				})
+				// 先回到原位置
+				this.scrollTop = this.old.scrollTop
+				this.$nextTick(function() {
+					// 再滚动到头部
+					this.scrollTop = 0
+				});
 			},
+			// 跳转至搜索列表
 			go2search(name) {
 				uni.navigateTo({
 					url: '../SearchList/SearchList?kw=' + name
 				})
 			}
 		},
+		// 获取类别数据
 		created() {
 			this.getCategories()
 		}
@@ -126,7 +138,7 @@
 						height: 60rpx;
 						transform: translateY(-50%);
 						background: #eb4450;
-						
+
 					}
 				}
 			}

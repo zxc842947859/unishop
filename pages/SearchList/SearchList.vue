@@ -43,15 +43,16 @@
 		data() {
 			return {
 				goodsList: [], // 商品列表
-				searchKW: '',
-				clearShow: false,
-				sortStr: '综合',
-				page: 1,
-				pagesize: 5,
-				status: 'more',
-				down: false,
-				up: false,
-				xd: false
+				searchKW: '',  // 搜索关键字
+				clearShow: false,  // 是否显示输入框清除图标
+				sortStr: '综合',  // 排序字段
+				page: 1,  // 第几页数据
+				pagesize: 5,  // 每页显示几条
+				status: 'more',  // 上拉加载更多状态
+				down: false,  // 价格排序 高到低 向下
+				up: false,  // 价格排序 低到高 向上
+				xd: false,   // 头部是否固定定位
+				xlz: false  // 下拉加载中
 			}
 		},
 		// 上拉加载更多
@@ -60,7 +61,9 @@
 		},
 		// 下拉刷新
 		onPullDownRefresh() {
+			if (this.xlz) return
 			this.searchGoods()
+			
 		},
 		methods: {
 			// 切换排序规则
@@ -80,6 +83,7 @@
 			},
 			// 搜索商品
 			searchGoods() {
+				this.xlz = true
 				// 利用eventbus通知 searchPage保存搜索记录
 				this.$bus.$emit('saveHistory', this.searchKW)
 				// 恢复初始状态
@@ -87,6 +91,7 @@
 				this.status = 'more'
 				this.goodsList = []
 				this.loadMore()
+				
 			},
 			// 加载商品数据
 			async loadMore() {
@@ -107,6 +112,8 @@
 				this.goodsList.push(...res.message.goods)
 				// 数据是否已全部加载完
 				this.status = this.goodsList.length >= res.message.total ? 'noMore' : 'more'
+				this.xlz = false
+				
 			},
 			// 跳转商品详情
 			go2detail(goodId) {
