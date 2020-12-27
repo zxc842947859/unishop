@@ -46,14 +46,18 @@
 				searchKW: '', // 搜索关键字
 				clearShow: false, // 是否显示输入框清除图标
 				sortStr: '综合', // 排序字段
-				page: 1, // 第几页数据
-				pagesize: 5, // 每页显示几条
 				status: 'more', // 上拉加载更多状态
 				down: false, // 价格排序 高到低 向下
 				up: false, // 价格排序 低到高 向上
 				// xd: false, // 头部是否固定定位
-				isRequesting: false // 下拉加载中
+
 			}
+		},
+		onLoad() {
+			// 定义只有逻辑使用的变量
+			this.page = 1 // 第几页数据
+			this.pagesize = 5 // 每页显示几条
+			this.isRequesting = false // 是否下拉加载中
 		},
 		// 上拉加载更多
 		onReachBottom() {

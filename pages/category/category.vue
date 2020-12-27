@@ -40,13 +40,16 @@
 			return {
 				categoryList: [], // 类别所有数据
 				cateId: 0, // 当前选择的类别
-				toggle: true, // 用来控制右侧的静默刷新
-				scrollTop: 0,  // 当前二级类别滚动位置
-				old: {  // 原二级类别滚动位置
-					scrollTop: 0
-				}
+				// toggle: true, // 用来控制右侧的静默刷新
+				scrollTop: 0 // 当前二级类别滚动位置
 			}
 		},
+		onLoad() {
+			// 定义逻辑使用变量,非DOM结构使用的变量
+			this.old = { // 原二级类别滚动位置
+				scrollTop: 0
+			}
+		},Î
 		methods: {
 			async getCategories() {
 				const res = await this.$request({

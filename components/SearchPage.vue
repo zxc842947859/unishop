@@ -1,7 +1,8 @@
 <template>
 	<view class="search-page">
 		<view class="search-bar">
-			<input type="text" v-model.trim="searchKeyWord" placeholder="请输入您想要的商品" @confirm="searchEvent" confirm-type="search" @blur="clearShow=false" @focus="clearShow=true" focus />
+			<input type="text" v-model.trim="searchKeyWord" placeholder="请输入您想要的商品" @confirm="searchEvent" confirm-type="search"
+			 @blur="clearShow=false" @focus="clearShow=true" focus />
 			<icon type="search" class="search-icon" size="36rpx"></icon>
 			<icon class="clear-icon" type="clear" size="26rpx" v-show="searchKeyWord.length && clearShow" @click="searchKeyWord = ''"></icon>
 			<button type="default" size="mini" @click="back">取消</button>
@@ -25,10 +26,11 @@
 				searchKeyWord: '', // 搜索关键字
 				clearShow: false,
 				searchHistoryList: [], // 搜索记录
-				go2List: true
 			}
 		},
-		onShow() {
+		onLoad() {
+			this.go2searchList = true // 是否跳转搜索列表
+			// 加载历史记录
 			uni.getStorage({
 				key: 'historyList',
 				success: (res) => {
@@ -38,14 +40,16 @@
 		},
 		created() {
 			this.$bus.$on('saveHistory', (kw) => {
-				this.go2List = false
+				this.go2searchList = false
 				this.historySearch(kw)
 			})
 		},
 		methods: {
+			// 取消按钮返回上个页面
 			back() {
 				uni.navigateBack()
 			},
+			// 保存搜索记录
 			saveHistory({
 				key = 'historyList',
 				data
@@ -62,7 +66,7 @@
 				this.searchKeyWord = kw
 				this.searchEvent()
 			},
-			// 搜索Í
+			// 搜索
 			searchEvent() {
 				if (this.searchKeyWord.length <= 0) return
 				// 添加搜索记录到列表开头
@@ -74,7 +78,7 @@
 					data: this.searchHistoryList
 				})
 				// 跳转到搜索列表界面
-				this.go2List && uni.navigateTo({
+				this.go2searchList && uni.navigateTo({
 					url: '/pages/SearchList/SearchList?kw=' + this.searchKeyWord
 				})
 			},
@@ -134,12 +138,13 @@
 				height: 30rpx;
 				overflow: hidden;
 			}
+
 			.clear-icon {
 				position: absolute;
 				right: 220rpx;
 				z-index: 99;
 			}
-			
+
 		}
 
 		.search-box {
